@@ -93,7 +93,8 @@ namespace SMWebTracker.Services
 
                 if (valid)
                 {
-                    var PRIVATE_KEY = _configuration.GetValue<string>("PRIVATE_KEY");
+                    var PRIVATE_KEY =
+                        _configuration.GetValue<string>("PRIVATE_KEY");
 
                     return TokenGenerator.GenerateUserToken(user, PRIVATE_KEY);
                 }

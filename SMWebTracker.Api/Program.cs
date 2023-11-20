@@ -57,7 +57,8 @@ builder.Services.AddSwaggerGen(c =>
         });    
 });
 
-var PRIVATE_KEY = builder.Configuration.GetValue<string>("PRIVATE_KEY");
+var PRIVATE_KEY = 
+    builder.Configuration.GetValue<string>("PRIVATE_KEY");
 
 // Authentication
 var chave = Convert.FromBase64String(PRIVATE_KEY);
@@ -117,7 +118,7 @@ static void ConfigDatabase(IServiceCollection services, IConfiguration configura
     services.AddDbContext<TrackerDB>(options =>
     {
         options
-            .UseSqlServer(
+            .UseSqlServer(                
                 configuration.GetConnectionString("DefaultConnection"),
                 builder => builder.MigrationsAssembly("SMWebTracker.Data"));
     }, ServiceLifetime.Transient, ServiceLifetime.Transient);
