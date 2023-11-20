@@ -12,7 +12,7 @@ using SMWebTracker.Data;
 namespace SMWebTracker.Data.Migrations
 {
     [DbContext(typeof(TrackerDB))]
-    [Migration("20231119205507_billets_log_control")]
+    [Migration("20231119205507_create_user_table")]
     partial class billets_log_control
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

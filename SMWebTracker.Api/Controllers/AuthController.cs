@@ -27,10 +27,10 @@ namespace SMWebTracker.Api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _userService.CreateUser(userModel, User.FindFirst(ClaimTypes.Email).Value);
+                    var result = await _userService.CreateUser(userModel, User.FindFirst(ClaimTypes.Email)?.Value);
                     if (result != null)
                     {
-                        return Created("api/v1/usuario/", result);
+                        return Created("create/usuario/", result);
                     }
 
                     return BadRequest($"O Usuário '{userModel.Login}' já existe.");
@@ -39,7 +39,6 @@ namespace SMWebTracker.Api.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-
             }
             catch (UnauthorizedAccessException)
             {

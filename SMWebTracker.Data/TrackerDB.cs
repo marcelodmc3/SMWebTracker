@@ -21,8 +21,12 @@ namespace SMWebTracker.Data
             base.OnModelCreating(builder);
 
             builder.Entity<User>();
+            builder.Entity<SuperMetroidTracker>();
+            builder.Entity<SuperMetroidGame>();
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<SuperMetroidGame> SuperMetroidGames { get; set; }
+        public DbSet<SuperMetroidTracker> SuperMetroidTrackers { get; set; }
     }
 }

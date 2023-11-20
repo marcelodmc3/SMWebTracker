@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SMWebTracker.Data;
 
@@ -11,9 +12,10 @@ using SMWebTracker.Data;
 namespace SMWebTracker.Data.Migrations
 {
     [DbContext(typeof(TrackerDB))]
-    partial class TrackerDBModelSnapshot : ModelSnapshot
+    [Migration("20231120013525_create_tracker_tables")]
+    partial class create_tracker_tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -49,6 +51,27 @@ namespace SMWebTracker.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SuperMetroidGames");
+                });
+
+            modelBuilder.Entity("SMWebTracker.Domain.Entities.SuperMetroidGameTracker", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SuperMetroidGameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SuperMetroidTrackerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SuperMetroidGameId");
+
+                    b.HasIndex("SuperMetroidTrackerId");
+
+                    b.ToTable("SuperMetroidGameTrackers");
                 });
 
             modelBuilder.Entity("SMWebTracker.Domain.Entities.SuperMetroidTracker", b =>
@@ -125,9 +148,6 @@ namespace SMWebTracker.Data.Migrations
                     b.Property<bool>("SpringBall")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("SuperMetroidGameId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("VariaSuit")
                         .HasColumnType("bit");
 
@@ -135,8 +155,6 @@ namespace SMWebTracker.Data.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SuperMetroidGameId");
 
                     b.ToTable("SuperMetroidTrackers");
                 });
@@ -178,18 +196,26 @@ namespace SMWebTracker.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SMWebTracker.Domain.Entities.SuperMetroidTracker", b =>
+            modelBuilder.Entity("SMWebTracker.Domain.Entities.SuperMetroidGameTracker", b =>
                 {
                     b.HasOne("SMWebTracker.Domain.Entities.SuperMetroidGame", null)
-                        .WithMany("SuperMetroidTrackers")
+                        .WithMany("SuperMetroidGameTrackers")
                         .HasForeignKey("SuperMetroidGameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("SMWebTracker.Domain.Entities.SuperMetroidTracker", "SuperMetroidTracker")
+                        .WithMany()
+                        .HasForeignKey("SuperMetroidTrackerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SuperMetroidTracker");
                 });
 
             modelBuilder.Entity("SMWebTracker.Domain.Entities.SuperMetroidGame", b =>
                 {
-                    b.Navigation("SuperMetroidTrackers");
+                    b.Navigation("SuperMetroidGameTrackers");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,9 +17,12 @@ namespace SMWebTracker.DI
         {
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISuperMetroidTrackerRepository, SuperMetroidTrackerRepository>();
+            services.AddScoped<ISuperMetroidGameRepository, SuperMetroidGameRepository>();            
 
             // Services
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ISuperMetroidGameService, SuperMetroidGameService>();
         }
     }
 }

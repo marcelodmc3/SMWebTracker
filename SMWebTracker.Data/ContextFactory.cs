@@ -22,7 +22,6 @@ namespace SMWebTracker.Data
 
             string connectionString = configuration.GetConnectionString("DefaultConnection");
 
-                //"Server=tcp:sm-tracker-dev-server.database.windows.net,1433;Initial Catalog=sm-tracker-dev-database;Persist Security Info=False;User ID=sm-tracker-dev;Password=\"89a;qnuBnf3K)R-\";MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             var optionBuilder = new DbContextOptionsBuilder<TrackerDB>();
 
             optionBuilder.UseSqlServer(connectionString, (opt) => { });
