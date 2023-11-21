@@ -8,6 +8,6 @@ namespace SMWebTracker.Domain.Dtos
 {
     public class NewSuperMetroidGameParameters
     {
-        public List<string> PlayerNames { get; set; }
+        public List<string> PlayerNames { get; set; } = new List<string>();
     }
 }

@@ -18,12 +18,12 @@ namespace SMWebTracker.Domain.Entities
         [Required]
         public Guid SuperMetroidGameId { get; set; }
 
-        [Required(ErrorMessage = "Nome do usuário é obrigatório.")]
+        [Required(ErrorMessage = "Índice do jogador é obrigatório.")]
         public int PlayerIndex { get; set; }
 
-        [Required(ErrorMessage = "Nome do usuário é obrigatório.")]
-        [MinLength(3, ErrorMessage = "Nome do usário precisa ter no mínimo 5 caracteres.")]
-        [MaxLength(50, ErrorMessage = "Nome do usário precisa ter no máximo 200 caracteres.")]
+        [Required(ErrorMessage = "Nome do jogador é obrigatório.")]
+        [MinLength(3, ErrorMessage = "Nome do jogador precisa ter no mínimo 3 caracteres.")]
+        [MaxLength(50, ErrorMessage = "Nome do jogador precisa ter no máximo 50 caracteres.")]
         public string PlayerName { get; set; }
 
         [Required]
@@ -51,7 +51,7 @@ namespace SMWebTracker.Domain.Entities
         public bool MorphBall { get; set; }
 
         [Required]
-        public bool BombJump { get; set; }
+        public bool Bombs { get; set; }
 
         [Required]
         public bool HighJumpBoots { get; set; }
@@ -75,7 +75,7 @@ namespace SMWebTracker.Domain.Entities
         public bool Draygon { get; set; }
 
         [Required]
-        public bool Ridey { get; set; }
+        public bool Ridley { get; set; }
 
         [Required]
         public bool ScrewAttack { get; set; }

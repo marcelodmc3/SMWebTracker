@@ -1,4 +1,5 @@
-﻿using SMWebTracker.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SMWebTracker.Domain.Entities;
 using SMWebTracker.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,14 @@ namespace SMWebTracker.Data.Repositories
             await _trackerDB.SaveChangesAsync();
 
             return newGame;
+        }
+
+        public async Task<SuperMetroidGame?> GetGameAsNoTrackingAsync(Guid gameId)
+        {
+            return await _trackerDB.SuperMetroidGames
+                .Include(g => g.SuperMetroidTrackers)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(g => g.Id.Equals(gameId));
         }
     }
 }

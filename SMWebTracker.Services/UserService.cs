@@ -72,7 +72,7 @@ namespace SMWebTracker.Services
                             IsAdmin = newUserModel.IsAdmin
                         };                        
 
-                        _userRepository.AddUser(user);
+                        await _userRepository.AddUser(user);
 
                         return user;                        
                     }

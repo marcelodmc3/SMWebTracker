@@ -106,7 +106,7 @@ app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json",
-        "API REST para o back-end do siste IMDB");
+        "API REST para o back-end do site SMWebTracker");
 });
 
 CreateDatabase(app);

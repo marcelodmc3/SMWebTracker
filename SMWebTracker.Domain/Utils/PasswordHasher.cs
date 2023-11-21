@@ -10,11 +10,11 @@ namespace SMWebTracker.Domain.Utils
     public class PasswordHasher
     {
         private const int HASH_ITERATIONS = 1783;
+        #warning TODO: Levar HASH_ITERATIONS para as configurações
 
         public static string[] GerarHash(string password)
         {
-            var salt = new byte[32];
-            new RNGCryptoServiceProvider().GetBytes(salt);
+            var salt = RandomNumberGenerator.GetBytes(32);          
 
             var pbkdf2 = new Rfc2898DeriveBytes(password, salt, HASH_ITERATIONS);
             byte[] hash = pbkdf2.GetBytes(64);
