@@ -17,7 +17,7 @@ namespace SMWebTracker.Data
 
             var configuration = new ConfigurationBuilder()
                  .SetBasePath(directory)
-                 .AddJsonFile("appsettings.Local.json")
+                 .AddJsonFile("appsettings.Development.json")
                  .Build();
 
             string connectionString = configuration.GetConnectionString("DefaultConnection");

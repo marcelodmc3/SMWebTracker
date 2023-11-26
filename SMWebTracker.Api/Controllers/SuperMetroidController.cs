@@ -9,7 +9,7 @@ using System.Security.Claims;
 namespace SMWebTracker.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SuperMetroidController : ControllerBase
     {
         private readonly ISuperMetroidGameService _superMetroidGameService;
