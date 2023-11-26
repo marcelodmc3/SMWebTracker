@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/Auth';
-import { setTokenHeaders } from '../utils/Authentication';
+import { setTokenHeaders, TOKEN_KEY } from '../utils/Authentication';
 
 function LoginPage() {
     const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ function LoginPage() {
             AuthService.login({ Login: email, Password: password })
             .then((response) => {
 
-                localStorage.setItem('jwt_smwebtracker', response.data.token);
+                localStorage.setItem(TOKEN_KEY, response.data.token);
                 setTokenHeaders();
                 navigate('/');
 

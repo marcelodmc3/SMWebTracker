@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const TOKEN_KEY = 'jwt_smwebtracker';
+export const TOKEN_KEY = 'jwt_smwebtracker';
 
 export const LOGIN_URL = "/";
 
