@@ -18,7 +18,7 @@ function LoginPage() {
 
                 localStorage.setItem(TOKEN_KEY, response.data.token);
                 setTokenHeaders();
-                navigate('/');
+                navigate('/gamespage');
 
             }).catch((errorResponse) => {
 

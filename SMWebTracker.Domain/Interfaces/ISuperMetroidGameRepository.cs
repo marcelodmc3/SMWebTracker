@@ -1,4 +1,5 @@
-﻿using SMWebTracker.Domain.Entities;
+﻿using SMWebTracker.Domain.Dtos;
+using SMWebTracker.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace SMWebTracker.Domain.Interfaces
     {
         Task<SuperMetroidGame> CreateNewGameAsync(int playerCount, Guid userId);
         Task<SuperMetroidGame?> GetGameAsNoTrackingAsync(Guid gameId);
+        Task<List<ActiveGameModel>> GetActiveGamesAsNoTrackingAsync();
 
     }
 }

@@ -101,5 +101,18 @@ namespace SMWebTracker.Api.Controllers
 
             return NotFound();
         }
+
+        [HttpGet("game/active")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetActiveGames()
+        {
+            var result = await _superMetroidGameService.GetActiveGamesAsNoTrackingAsync();
+            if (result != null)
+                return Ok(result);
+
+            return NotFound();
+        }
     }
 }

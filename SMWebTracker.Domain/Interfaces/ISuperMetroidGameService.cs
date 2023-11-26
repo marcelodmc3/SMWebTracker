@@ -16,5 +16,6 @@ namespace SMWebTracker.Domain.Interfaces
         Task<SuperMetroidTracker?> GeTrackerAsNoTrackingAsync(Guid gameId, int trackerIndex);
         Task<SuperMetroidTracker?> Track(Guid trackerId, SuperMetroidTrackerModel trackerChanges);
         Task<SuperMetroidTracker?> Track(Guid gameId, int trackerIndex, SuperMetroidTrackerModel trackerChanges);
+        Task<List<ActiveGameModel>> GetActiveGamesAsNoTrackingAsync();
     }
 }

@@ -51,6 +51,10 @@ namespace SMWebTracker.Services
             return result;
         }
 
+        public async Task<List<ActiveGameModel>> GetActiveGamesAsNoTrackingAsync()        
+            => await _superMetroidGameRepository.GetActiveGamesAsNoTrackingAsync();
+        
+
         public async Task<SuperMetroidGame?> GetGameAsNoTrackingAsync(Guid gameId)
             => await _superMetroidGameRepository.GetGameAsNoTrackingAsync(gameId);
 
