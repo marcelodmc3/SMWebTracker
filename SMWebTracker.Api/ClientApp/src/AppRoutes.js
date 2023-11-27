@@ -1,5 +1,7 @@
 import { Home } from "./components/Home";
 import GamesPage from "./components/GamesPage";
+import GamePage from "./components/GamePage";
+
 import { default as LoginPage } from "./components/LoginPage";
 
 const AppRoutes = [
@@ -18,6 +20,10 @@ const AppRoutes = [
   {
     path: '/gamespage',
     element: <GamesPage />
+  },
+  {
+   path: '/game/:id',
+   element: <GamePage />
   },
 ];
 

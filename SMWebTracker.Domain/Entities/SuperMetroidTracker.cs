@@ -90,6 +90,6 @@ namespace SMWebTracker.Domain.Entities
         public bool Botwoon { get; set; }
 
         [Required]
-        public bool GoldenTorizo { get; set; }
+        public bool GoldenTorizo { get; set; }        
     }
 }

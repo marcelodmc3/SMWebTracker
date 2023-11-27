@@ -9,5 +9,13 @@ export default {
 
     async activeGames() {
         return await api.get(`api/supermetroid/game/active`);
+    },
+
+    async trackerById(trackerId) {
+        return await api.get(`api/supermetroid/tracker/${trackerId}`);
+    },
+
+    async gameById(gameId) {
+        return await api.get(`api/supermetroid/game/${gameId}`);
     }
 };
