@@ -54,12 +54,12 @@ function TrackTable({ id }) {
     }
 
     return (
-        <div className="container bg-dark text-white">
+        <div className="container bg-dark text-white" style={{height:335, maxWidth:200}}>
             <h2 className="text-center my-4">{data.playerName}</h2>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (
-                        <tr key={i}>
+                        <tr key={i} style={{ border:'none' }}>
                             {row.map((imageName) => (
                                 <td key={imageName}>
                                     <img src={`/images/${imageName}.png`} alt={imageName} className={`img-fluid ${data[imageName] ? '' : 'grayscale'}`} />
