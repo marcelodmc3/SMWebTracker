@@ -27,12 +27,12 @@ function GamePage() {
 
     return (
         <div className="container">
-            <table className="table mt-4">
+            <table className="table mt-4" style={{ minWidth: 460 }}>
                 <tbody>
                     {rows.map((row, i) => (
-                        <tr key={i}>
+                        <tr key={i} >
                             {row.map((id) => (
-                                <td key={id}>
+                                <td key={id} style={{ padding: '0.1rem' }}>
                                     <TrackTable id={id} />
                                 </td>
                             ))}

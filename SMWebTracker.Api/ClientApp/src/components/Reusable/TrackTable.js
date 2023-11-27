@@ -61,7 +61,7 @@ function TrackTable({ id }) {
                     {rows.map((row, i) => (
                         <tr key={i} style={{ border:'none' }}>
                             {row.map((imageName) => (
-                                <td key={imageName}>
+                                <td key={imageName} style={{padding:'0.2rem'} }>
                                     <img src={`/images/${imageName}.png`} alt={imageName} className={`img-fluid ${data[imageName] ? '' : 'grayscale'}`} />
                                 </td>
                             ))}
