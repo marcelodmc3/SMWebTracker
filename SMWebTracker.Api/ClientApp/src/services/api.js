@@ -1,5 +1,4 @@
 ﻿import axios from 'axios';
-import { isLogin } from '../utils/Authentication';
 
 export const HttpStatus = {
     UNAUTHORIZED: 401,
@@ -17,7 +16,7 @@ const errorHandler = (error) => {
 
     if (isHandlerEnabled(error.config)) {
         if ((error.response && error.response.status === HttpStatus.FORBIDDEN) ||
-            ((error.reject && error.re.status === HttpStatus.UNAUTHORIZED && isLogin()))) {
+            ((error.response && error.response.status === HttpStatus.UNAUTHORIZED))) {
             localStorage.clear();
             window.location.replace("/")
         }

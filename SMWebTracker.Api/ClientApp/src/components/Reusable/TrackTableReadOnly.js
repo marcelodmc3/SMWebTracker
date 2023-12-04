@@ -1,8 +1,8 @@
-﻿import './TrackTable.scss';
+﻿import './TrackTableReadOnly.scss';
 import React, { useState, useEffect } from 'react';
 import SuperMetroidServices from '../../services/SuperMetroid';
 import { setTokenHeaders } from '../../utils/Authentication';
-function TrackTable({ id }) {
+function TrackTableReadOnly({ id }) {
     const [data, setData] = useState(null);
     const [images, setImages] = useState([]);
 
@@ -54,7 +54,7 @@ function TrackTable({ id }) {
     }
 
     return (
-        <div className="container bg-dark text-white">
+        <div className="container bg-dark text-white" style={{height:335, maxWidth:200}}>
             <h2 className="text-center my-4">{data.playerName}</h2>
             <table className="table">
                 <tbody>
@@ -73,4 +73,4 @@ function TrackTable({ id }) {
     );
 }
 
-export default TrackTable;
+export default TrackTableReadOnly;

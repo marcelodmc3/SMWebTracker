@@ -52,5 +52,9 @@ namespace SMWebTracker.Domain.Dtos
         public bool? Botwoon { get; set; }
         
         public bool? GoldenTorizo { get; set; }
+
+        public bool? Grapple { get; set; }
+
+        public bool? Xray { get; set; }
     }
 }

@@ -17,6 +17,14 @@ function GamesPage() {
 
     }, []);
 
+    const handleCopy = (url) => {
+
+        const fullURL = window.location.origin + url;
+
+        navigator.clipboard.writeText(fullURL);
+        alert('Link copiado com sucesso!');
+    };
+
     return (
         <div className="container">
             <table className="table mt-4">
@@ -24,8 +32,8 @@ function GamesPage() {
                     <tr>
                         <th scope="col">Criação do jogo</th>
                         <th scope="col">Jogadores</th>
-                        <th scope="col">Link do tracker</th>
-                        <th scope="col">Link para restream</th>
+                        <th scope="col">Tracker</th>
+                        <th scope="col">Restream</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,8 +41,10 @@ function GamesPage() {
                         <tr key={game.id}>
                             <td>{new Date(game.createdAt).toLocaleString()}</td>
                             <td>{game.players.join(', ')}</td>
-                            <td><Link to={`/game/${game.id}`}>Track Game</Link></td>
-                            <td><Link to={`/game/stream/${game.id}`}>Stream Game</Link></td>
+                            <td><Link to={`/game/${game.id}`} className="btn btn-primary me-2">Abrir tracker</Link>
+                                <button onClick={() => { handleCopy(`/game/${game.id}`) }} className="btn btn-secondary">Copiar link</button></td>
+                            <td><Link to={`/game/readonly/${game.id}`} className="btn btn-primary me-2">Abrir tracker</Link>
+                                <button onClick={() => { handleCopy(`/game/readonly/${game.id}`) }} className="btn btn-secondary">Copiar link</button></td>
                         </tr>
                     ))}
                 </tbody>

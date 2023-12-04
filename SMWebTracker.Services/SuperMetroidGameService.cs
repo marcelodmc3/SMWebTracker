@@ -114,6 +114,8 @@ namespace SMWebTracker.Services
             if (trackerChanges.Crocomire.HasValue) { changed = true; tracker.Crocomire = trackerChanges.Crocomire.Value; }
             if (trackerChanges.Botwoon.HasValue) { changed = true; tracker.Botwoon = trackerChanges.Botwoon.Value; }
             if (trackerChanges.GoldenTorizo.HasValue) { changed = true; tracker.GoldenTorizo = trackerChanges.GoldenTorizo.Value; }
+            if (trackerChanges.Grapple.HasValue) { changed = true; tracker.Grapple = trackerChanges.Grapple.Value; }
+            if (trackerChanges.Xray.HasValue) { changed = true; tracker.Xray = trackerChanges.Xray.Value; }
 
             if (changed)
             {

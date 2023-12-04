@@ -23,7 +23,11 @@ const AppRoutes = [
   },
   {
    path: '/game/:id',
-   element: <GamePage />
+      element: <GamePage readonly={false} />
+  },
+  {
+    path: '/game/readonly/:id',
+    element: <GamePage readonly={true} />
   },
 ];
 
