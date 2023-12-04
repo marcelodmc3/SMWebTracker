@@ -37,17 +37,26 @@ function GamePage({ readonly }) {
     }, []);
 
     const rows = [];
-    for (let i = 0; i < ids.length; i += 2) {
-        rows.push(ids.slice(i, i + 2));
+
+    var cellsInaRow = 2;
+    var width = 460;
+
+    if (ids.length > 4) {
+        cellsInaRow = 3;
+        width = 720;
+    }
+
+    for (let i = 0; i < ids.length; i += cellsInaRow) {
+        rows.push(ids.slice(i, i + cellsInaRow));
     }
 
     if (isReadOnly) {
         return (
             <div className="container">
-                <table className="table mt-4" style={{ minWidth: 460 }}>
+                <table className="table mt-4" style={{ minWidth: width }}>
                     <tbody>
                         {rows.map((row, i) => (
-                            <tr key={i} >
+                            <tr key={i} style={{ borderColor: '#BBBBBB' }}>
                                 {row.map((id) => (
                                     <td key={id} style={{ padding: '0.1rem' }}>
                                         <TrackTableReadOnly id={id} />
@@ -61,11 +70,11 @@ function GamePage({ readonly }) {
         );
     } else {
         return (
-            <div className="container">
+            <div className="container ">
                 <table className="table mt-4">
                     <tbody>
                         {rows.map((row, i) => (
-                            <tr key={i} >
+                            <tr key={i} style={{ borderColor: '#BBBBBB' }}>
                                 {row.map((id) => (
                                     <td key={id} style={{ padding: '0.1rem' }}>
                                         <TrackTable id={id} />

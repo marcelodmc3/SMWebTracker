@@ -12,7 +12,7 @@ export default class App extends Component {
         return (
             <div>
             <ToastContainer/>
-                <Layout>
+                <Layout >
                     <Routes>
                         {AppRoutes.map((route, index) => {
                             const { element, ...rest } = route;

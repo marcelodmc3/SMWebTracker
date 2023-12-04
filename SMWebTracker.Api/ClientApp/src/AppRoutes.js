@@ -1,4 +1,3 @@
-import { Home } from "./components/Home";
 import GamesPage from "./components/GamesPage";
 import GamePage from "./components/GamePage";
 
@@ -8,10 +7,6 @@ const AppRoutes = [
   {
    index: true,
    element: <LoginPage />
-  },
-  {
-    path: '/home',
-    element: <Home />
   },
   {    
     path: '/loginpage',
