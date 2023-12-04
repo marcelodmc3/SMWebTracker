@@ -14,6 +14,8 @@ const isHandlerEnabled = (config = {}) => {
 
 const errorHandler = (error) => {
 
+    console.log("errorHandler", error);
+
     if (isHandlerEnabled(error.config)) {
         if ((error.response && error.response.status === HttpStatus.FORBIDDEN) ||
             ((error.response && error.response.status === HttpStatus.UNAUTHORIZED))) {

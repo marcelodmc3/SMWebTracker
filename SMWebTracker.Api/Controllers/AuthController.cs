@@ -60,5 +60,13 @@ namespace SMWebTracker.Api.Controllers
 
             return NotFound("Usuário ou senha inválidos.");
         }
+
+        [HttpGet("ping")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> ping()
+        {
+            return Ok();
+        }
     }
 }

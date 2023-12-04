@@ -1,22 +1,34 @@
 ﻿import React, { useState, useEffect } from 'react';
+import {  useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import TrackTable from './Reusable/TrackTable';
 import TrackTableReadOnly from './Reusable/TrackTableReadOnly';
 import SuperMetroidServices from '../services/SuperMetroid';
-import { setTokenHeaders } from '../utils/Authentication';
+import { setTokenHeaders, isLogin } from '../utils/Authentication';
 
 
 function GamePage({ readonly }) {
     const [ids, setIds] = useState([]);
     const { id } = useParams();
     const isReadOnly = readonly;
+    const navigate = useNavigate();
 
-    console.log("readonly", isReadOnly);
+    useEffect(() => {
+        const checkUserStatus = async () => {
+
+            var hasToken = isLogin();
+
+            if (!hasToken) {
+                navigate('/loginpage');
+            }
+        };
+
+        checkUserStatus();
+    }, [navigate]);
 
     useEffect(() => {
 
         setTokenHeaders();
-        console.log("GamePage", id);
 
         SuperMetroidServices.game(id)
             .then((result) => {

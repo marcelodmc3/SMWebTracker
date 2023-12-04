@@ -1,15 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/Auth';
-import { setTokenHeaders, TOKEN_KEY } from '../utils/Authentication';
+import { setTokenHeaders, TOKEN_KEY, isLogin } from '../utils/Authentication';
 
-function LoginPage() {
+const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    useEffect(() => {
+        const checkUserStatus = async () => {
+
+            var hasToken = isLogin();
+
+            if (hasToken) {
+
+                AuthService.ping()
+                    .then(() => { navigate('/gamespage'); })
+                    .catch(() => {
+                        
+                    })
+            }                 
+        };
+
+        checkUserStatus();
+    }, [navigate]);
+
+    const handleLogin = async (e) => {
         e.preventDefault()
 
         try {
@@ -33,7 +51,7 @@ function LoginPage() {
 
     return (
         <div className="container">
-            <form onSubmit={handleSubmit} className="mt-4">
+            <form onSubmit={handleLogin} className="mt-4">
                 <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email address</label>
                     <input type="email" className="form-control" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

@@ -1,10 +1,26 @@
 ﻿import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import SuperMetroidServices from '../services/SuperMetroid';
-import { setTokenHeaders } from '../utils/Authentication';
+import { setTokenHeaders, isLogin } from '../utils/Authentication';
 
 function GamesPage() {
     const [games, setGames] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const checkUserStatus = async () => {
+
+            var hasToken = isLogin();
+
+            if (!hasToken) {
+                navigate('/loginpage');
+            }
+        };
+
+        checkUserStatus();
+    }, [navigate]);
 
     useEffect(() => {
 
@@ -22,7 +38,8 @@ function GamesPage() {
         const fullURL = window.location.origin + url;
 
         navigator.clipboard.writeText(fullURL);
-        alert('Link copiado com sucesso!');
+
+        toast.success('Link copiado com sucesso!');
     };
 
     return (
@@ -33,7 +50,7 @@ function GamesPage() {
                         <th scope="col">Criação do jogo</th>
                         <th scope="col">Jogadores</th>
                         <th scope="col">Tracker</th>
-                        <th scope="col">Restream</th>
+                        <th scope="col">Restreamer</th>
                     </tr>
                 </thead>
                 <tbody>
