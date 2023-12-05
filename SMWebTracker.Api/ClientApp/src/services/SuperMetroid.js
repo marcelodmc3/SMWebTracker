@@ -17,5 +17,9 @@ export default {
 
     async gameById(gameId) {
         return await api.get(`api/supermetroid/game/${gameId}`);
+    },
+
+    async track(trackerId, payload) {
+        return await api.patch(`api/supermetroid/tracker/${trackerId}`, payload);
     }
 };

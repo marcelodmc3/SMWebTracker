@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import SuperMetroidServices from '../../services/SuperMetroid';
 import { setTokenHeaders } from '../../utils/Authentication';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function TrackTable({ id }) {
     const [data, setData] = useState(null);
     const [images, setImages] = useState([]);
@@ -44,6 +46,23 @@ function TrackTable({ id }) {
 
     }, [id]);
 
+
+    const handleClick = (imageName) => {
+
+        var payload = {};
+        payload[imageName] = true;
+
+        console.log("handleClick", id, imageName, payload);
+
+        SuperMetroidServices.track(id, payload)
+            .then(() => {
+                toast.success('YEP!');
+            })
+            .catch(() => {
+                toast.error('NOPE!');
+            });
+    }
+
     if (!data) {
         return null;
     }
@@ -61,7 +80,11 @@ function TrackTable({ id }) {
                     {rows.map((row, i) => (
                         <tr key={i} style={{ border:'none' }}>
                             {row.map((imageName) => (
-                                <td key={imageName} style={{padding:'0.2rem'} }>
+                                <td
+                                    key={imageName} style={{ padding: '0.2rem', textAlign: 'center' }}
+                                    onClick={() => { handleClick(imageName) }}
+                                    title={imageName}
+                                >
                                     <img src={`/images/${imageName}.png`} alt={imageName} className={`img-fluid ${data[imageName] ? '' : 'grayscale'}`} />
                                 </td>
                             ))}
