@@ -1,30 +1,27 @@
-﻿using SMWebTracker.Data;
+﻿using Microsoft.AspNetCore.SignalR;
 using SMWebTracker.Domain.Dtos;
 using SMWebTracker.Domain.Entities;
 using SMWebTracker.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace SMWebTracker.Services
 {
     public class SuperMetroidGameService : ISuperMetroidGameService
     {
-        public readonly ISuperMetroidTrackerRepository _superMetroidTrackerRepository;
-        public readonly ISuperMetroidGameRepository _superMetroidGameRepository;
-        public readonly IUserRepository _userRepository;
+        private readonly ISuperMetroidTrackerRepository _superMetroidTrackerRepository;
+        private readonly ISuperMetroidGameRepository _superMetroidGameRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IHubContext<TrackerHub> _hubContext;
 
         public SuperMetroidGameService(
             ISuperMetroidTrackerRepository superMetroidTrackerRepository,
             ISuperMetroidGameRepository superMetroidGameRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IHubContext<TrackerHub> hubContext)
         {
             _superMetroidTrackerRepository = superMetroidTrackerRepository;
             _superMetroidGameRepository = superMetroidGameRepository;
             _userRepository = userRepository;
+            _hubContext = hubContext;
         }
 
         public async Task<NewSuperMetroidGameModel> CreateNewGameAsync(NewSuperMetroidGameParameters newSuperMetroidGameParameters, string userEmail)
@@ -92,34 +89,35 @@ namespace SMWebTracker.Services
         {
             bool changed = false;
 
-            if (trackerChanges.VariaSuit.HasValue) { changed = true; tracker.VariaSuit = trackerChanges.VariaSuit.Value; }
-            if (trackerChanges.GravitySuit.HasValue) { changed = true; tracker.GravitySuit = trackerChanges.GravitySuit.Value; }
-            if (trackerChanges.ChargeBeam.HasValue) { changed = true; tracker.ChargeBeam = trackerChanges.ChargeBeam.Value; }
-            if (trackerChanges.IceBeam.HasValue) { changed = true; tracker.IceBeam = trackerChanges.IceBeam.Value; }
-            if (trackerChanges.WaveBeam.HasValue) { changed = true; tracker.WaveBeam = trackerChanges.WaveBeam.Value; }
-            if (trackerChanges.SpazerBeam.HasValue) { changed = true; tracker.SpazerBeam = trackerChanges.SpazerBeam.Value; }
-            if (trackerChanges.PlasmaBeam.HasValue) { changed = true; tracker.PlasmaBeam = trackerChanges.PlasmaBeam.Value; }
-            if (trackerChanges.MorphBall.HasValue) { changed = true; tracker.MorphBall = trackerChanges.MorphBall.Value; }
-            if (trackerChanges.Bombs.HasValue) { changed = true; tracker.Bombs = trackerChanges.Bombs.Value; }
-            if (trackerChanges.HighJumpBoots.HasValue) { changed = true; tracker.HighJumpBoots = trackerChanges.HighJumpBoots.Value; }
-            if (trackerChanges.SpeedBooster.HasValue) { changed = true; tracker.SpeedBooster = trackerChanges.SpeedBooster.Value; }
-            if (trackerChanges.SpaceJump.HasValue) { changed = true; tracker.SpaceJump = trackerChanges.SpaceJump.Value; }
-            if (trackerChanges.SpringBall.HasValue) { changed = true; tracker.SpringBall = trackerChanges.SpringBall.Value; }
-            if (trackerChanges.Kraid.HasValue) { changed = true; tracker.Kraid = trackerChanges.Kraid.Value; }
-            if (trackerChanges.Phantoon.HasValue) { changed = true; tracker.Phantoon = trackerChanges.Phantoon.Value; }
-            if (trackerChanges.Draygon.HasValue) { changed = true; tracker.Draygon = trackerChanges.Draygon.Value; }
-            if (trackerChanges.Ridley.HasValue) { changed = true; tracker.Ridley = trackerChanges.Ridley.Value; }
-            if (trackerChanges.ScrewAttack.HasValue) { changed = true; tracker.ScrewAttack = trackerChanges.ScrewAttack.Value; }
-            if (trackerChanges.SporeSpawn.HasValue) { changed = true; tracker.SporeSpawn = trackerChanges.SporeSpawn.Value; }
-            if (trackerChanges.Crocomire.HasValue) { changed = true; tracker.Crocomire = trackerChanges.Crocomire.Value; }
-            if (trackerChanges.Botwoon.HasValue) { changed = true; tracker.Botwoon = trackerChanges.Botwoon.Value; }
-            if (trackerChanges.GoldenTorizo.HasValue) { changed = true; tracker.GoldenTorizo = trackerChanges.GoldenTorizo.Value; }
-            if (trackerChanges.Grapple.HasValue) { changed = true; tracker.Grapple = trackerChanges.Grapple.Value; }
-            if (trackerChanges.Xray.HasValue) { changed = true; tracker.Xray = trackerChanges.Xray.Value; }
+            if (trackerChanges.VariaSuit.HasValue) { changed = true; tracker.VariaSuit = !tracker.VariaSuit; }
+            if (trackerChanges.GravitySuit.HasValue) { changed = true; tracker.GravitySuit = !tracker.GravitySuit; }
+            if (trackerChanges.ChargeBeam.HasValue) { changed = true; tracker.ChargeBeam = !tracker.ChargeBeam; }
+            if (trackerChanges.IceBeam.HasValue) { changed = true; tracker.IceBeam = !tracker.IceBeam; }
+            if (trackerChanges.WaveBeam.HasValue) { changed = true; tracker.WaveBeam = !tracker.WaveBeam; }
+            if (trackerChanges.SpazerBeam.HasValue) { changed = true; tracker.SpazerBeam = !tracker.SpazerBeam; }
+            if (trackerChanges.PlasmaBeam.HasValue) { changed = true; tracker.PlasmaBeam = !tracker.PlasmaBeam; }
+            if (trackerChanges.MorphBall.HasValue) { changed = true; tracker.MorphBall = !tracker.MorphBall; }
+            if (trackerChanges.Bombs.HasValue) { changed = true; tracker.Bombs = !tracker.Bombs; }
+            if (trackerChanges.HighJumpBoots.HasValue) { changed = true; tracker.HighJumpBoots = !tracker.HighJumpBoots; }
+            if (trackerChanges.SpeedBooster.HasValue) { changed = true; tracker.SpeedBooster = !tracker.SpeedBooster; }
+            if (trackerChanges.SpaceJump.HasValue) { changed = true; tracker.SpaceJump = !tracker.SpaceJump; }
+            if (trackerChanges.SpringBall.HasValue) { changed = true; tracker.SpringBall = !tracker.SpringBall; }
+            if (trackerChanges.Kraid.HasValue) { changed = true; tracker.Kraid = !tracker.Kraid; }
+            if (trackerChanges.Phantoon.HasValue) { changed = true; tracker.Phantoon = !tracker.Phantoon; }
+            if (trackerChanges.Draygon.HasValue) { changed = true; tracker.Draygon = !tracker.Draygon; }
+            if (trackerChanges.Ridley.HasValue) { changed = true; tracker.Ridley = !tracker.Ridley; }
+            if (trackerChanges.ScrewAttack.HasValue) { changed = true; tracker.ScrewAttack = !tracker.ScrewAttack; }
+            if (trackerChanges.SporeSpawn.HasValue) { changed = true; tracker.SporeSpawn = !tracker.SporeSpawn; }
+            if (trackerChanges.Crocomire.HasValue) { changed = true; tracker.Crocomire = !tracker.Crocomire; }
+            if (trackerChanges.Botwoon.HasValue) { changed = true; tracker.Botwoon = !tracker.Botwoon; }
+            if (trackerChanges.GoldenTorizo.HasValue) { changed = true; tracker.GoldenTorizo = !tracker.GoldenTorizo; }
+            if (trackerChanges.Grapple.HasValue) { changed = true; tracker.Grapple = !tracker.Grapple; }
+            if (trackerChanges.Xray.HasValue) { changed = true; tracker.Xray = !tracker.Xray; }
 
             if (changed)
             {
                 await _superMetroidTrackerRepository.SaveChangesAsyc(tracker);
+                await _hubContext.Clients.All.SendAsync(tracker.Id.ToString(), tracker);
             }
 
             return tracker;

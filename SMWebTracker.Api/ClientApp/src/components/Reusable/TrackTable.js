@@ -4,6 +4,8 @@ import SuperMetroidServices from '../../services/SuperMetroid';
 import { setTokenHeaders } from '../../utils/Authentication';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import * as signalR from '@microsoft/signalr';
+
 function TrackTable({ id }) {
     const [data, setData] = useState(null);
     const [images, setImages] = useState([]);
@@ -46,20 +48,49 @@ function TrackTable({ id }) {
 
     }, [id]);
 
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            try {
+                SuperMetroidServices.trackerById(id)
+                    .then((result) => {
+                        setData(result.data);
+                    });
+
+            } catch (error) {
+                console.error('Failed to fetch count', error);
+            }
+        }, 5000);
+
+        // Clean up interval on unmount
+        return () => clearInterval(interval);
+    }, [id]);
+
+    /*useEffect(() => {
+        
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/api/trackerhub", { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
+            .withAutomaticReconnect()
+            .build();
+
+        connection.start()
+            .then(() => console.log('Connection started'))
+            .catch(err => console.log('Error while starting connection: ' + err))
+
+        connection.on(`${id}`, (result) => {
+            setData(result.data);
+        });
+    }, [id]);//*/
 
     const handleClick = (imageName) => {
 
         var payload = {};
         payload[imageName] = true;
 
-        console.log("handleClick", id, imageName, payload);
-
         SuperMetroidServices.track(id, payload)
-            .then(() => {
-                toast.success('YEP!');
+            .then((result) => {
+                setData(result.data);
             })
             .catch(() => {
-                toast.error('NOPE!');
             });
     }
 
@@ -74,7 +105,7 @@ function TrackTable({ id }) {
 
     return (
         <div className="container bg-dark text-white">
-            <h2 className="text-center my-4">{data.playerName}</h2>
+            <h2 className="text-center my-0">{data.playerName}</h2>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (

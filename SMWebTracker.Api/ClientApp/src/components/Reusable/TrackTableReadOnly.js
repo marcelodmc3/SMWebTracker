@@ -5,6 +5,7 @@ import { setTokenHeaders } from '../../utils/Authentication';
 function TrackTableReadOnly({ id }) {
     const [data, setData] = useState(null);
     const [images, setImages] = useState([]);
+    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
 
@@ -44,6 +45,31 @@ function TrackTableReadOnly({ id }) {
 
     }, [id]);
 
+    useEffect(() => {
+
+        const interval = setInterval(async () => {
+            try {
+                SuperMetroidServices.trackerById(id)
+                    .then((result) => {
+                        setData(result.data);                        
+                    });
+
+            } catch (error) {
+                console.error('Failed to fetch count', error);
+            }
+        }, 5000);
+
+        const countdownInterval = setInterval(() => {
+            setCountdown((countdown) => countdown - 1);
+        }, 1000);
+
+        
+        // Clean up interval on unmount
+        return () => {
+            clearInterval(interval); clearInterval(countdownInterval);
+        }
+    }, [id]);
+
     if (!data) {
         return null;
     }
@@ -54,8 +80,8 @@ function TrackTableReadOnly({ id }) {
     }
 
     return (
-        <div className="container bg-dark text-white" style={{height:335, maxWidth:200}}>
-            <h2 className="text-center my-4">{data.playerName}</h2>
+        <div className="container bg-dark text-white" style={{height:305, maxWidth:200}}>
+            <h4 className="text-center my-0">{data.playerName}</h4>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (
