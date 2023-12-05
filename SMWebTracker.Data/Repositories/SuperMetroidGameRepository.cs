@@ -44,7 +44,7 @@ namespace SMWebTracker.Data.Repositories
                 {
                     Id = g.Id,
                     CreatedBy = g.CreatedBy,
-                    CreatedAt = g.CreatedAt,
+                    CreatedAt = g.CreatedAt.ToLocalTime(),
                     Players = g.SuperMetroidTrackers.Select(t => t.PlayerName).ToList(),
                 })
                 .ToListAsync();
