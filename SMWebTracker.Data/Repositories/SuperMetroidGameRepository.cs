@@ -19,13 +19,14 @@ namespace SMWebTracker.Data.Repositories
             _trackerDB = trackerDB;
         }
 
-        public async Task<SuperMetroidGame> CreateNewGameAsync(int playerCount, Guid userId)
+        public async Task<SuperMetroidGame> CreateNewGameAsync(int playerCount, string description, Guid userId)
         {
             var newGame = new SuperMetroidGame
             {
                 PlayerCount = playerCount,
                 CreatedBy = userId,
                 CreatedAt = DateTime.UtcNow,
+                Description = description,
                 IsOpen = true
             };
 
@@ -43,6 +44,7 @@ namespace SMWebTracker.Data.Repositories
                 .Select(g => new ActiveGameModel
                 {
                     Id = g.Id,
+                    Description = g.Description,
                     CreatedBy = g.CreatedBy,
                     CreatedAt = g.CreatedAt.ToLocalTime(),
                     Players = g.SuperMetroidTrackers.Select(t => t.PlayerName).ToList(),
@@ -56,6 +58,19 @@ namespace SMWebTracker.Data.Repositories
                 .Include(g => g.SuperMetroidTrackers)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(g => g.Id.Equals(gameId));
+        }
+
+        public async Task<SuperMetroidGame?> GetGameAsync(Guid gameId)
+        {
+            return await _trackerDB.SuperMetroidGames
+                .Include(g => g.SuperMetroidTrackers)
+                .FirstOrDefaultAsync(g => g.Id.Equals(gameId));
+        }
+
+        public async Task UpdageGame(SuperMetroidGame game)
+        {
+            _trackerDB.SuperMetroidGames.Update(game);
+            await _trackerDB.SaveChangesAsync();
         }
     }
 }

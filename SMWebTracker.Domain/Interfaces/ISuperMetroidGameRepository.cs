@@ -10,9 +10,10 @@ namespace SMWebTracker.Domain.Interfaces
 {
     public interface ISuperMetroidGameRepository
     {
-        Task<SuperMetroidGame> CreateNewGameAsync(int playerCount, Guid userId);
+        Task<SuperMetroidGame> CreateNewGameAsync(int playerCount, string description, Guid userId);
         Task<SuperMetroidGame?> GetGameAsNoTrackingAsync(Guid gameId);
+        Task<SuperMetroidGame?> GetGameAsync(Guid gameId);
         Task<List<ActiveGameModel>> GetActiveGamesAsNoTrackingAsync();
-
+        Task UpdageGame(SuperMetroidGame game);
     }
 }

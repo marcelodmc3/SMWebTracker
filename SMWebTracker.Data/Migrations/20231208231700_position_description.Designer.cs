@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SMWebTracker.Data;
 
@@ -11,9 +12,10 @@ using SMWebTracker.Data;
 namespace SMWebTracker.Data.Migrations
 {
     [DbContext(typeof(TrackerDB))]
-    partial class TrackerDBModelSnapshot : ModelSnapshot
+    [Migration("20231208231700_position_description")]
+    partial class position_description
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

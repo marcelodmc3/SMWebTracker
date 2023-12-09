@@ -80,8 +80,6 @@ builder.Services.AddAuthentication(auth =>
     };
 });
 
-builder.Services.AddSignalR();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -104,11 +102,6 @@ app.MapControllerRoute(
 
 app.MapFallbackToFile("index.html");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapHub<TrackerHub>("api/trackerhub");
-});
-
 // Ativando middlewares para uso do Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
@@ -126,8 +119,8 @@ static void ConfigDatabase(IServiceCollection services, IConfiguration configura
     services.AddDbContext<TrackerDB>(options =>
     {
         options
-            .UseSqlServer(                
-                configuration.GetConnectionString("DefaultConnection"),
+            .UseSqlServer(
+            configuration.GetConnectionString("DefaultConnection"),                
                 builder => builder.MigrationsAssembly("SMWebTracker.Data"));
     }, ServiceLifetime.Transient, ServiceLifetime.Transient);
 }

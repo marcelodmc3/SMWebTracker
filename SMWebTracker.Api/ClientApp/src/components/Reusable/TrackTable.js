@@ -4,7 +4,6 @@ import SuperMetroidServices from '../../services/SuperMetroid';
 import { setTokenHeaders } from '../../utils/Authentication';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import * as signalR from '@microsoft/signalr';
 
 function TrackTable({ id }) {
     const [data, setData] = useState(null);
@@ -103,9 +102,19 @@ function TrackTable({ id }) {
         rows.push(images.slice(i, i + 4));
     }
 
+    function padString(str) {
+        const totalLength = 20;
+        const padLength = Math.ceil((totalLength - str.length) / 2);
+
+        let paddedStr = str.padStart(str.length + padLength, ' ');
+        paddedStr = paddedStr.padEnd(totalLength, ' ');
+
+        return paddedStr;
+    }
+
     return (
-        <div className="container bg-dark text-white">
-            <h2 className="text-center my-0">{data.playerName}</h2>
+        <div className="container bg-dark text-white" style={{ minWidth: 230 }}>
+            <h5 className="table-cell-header text-center my-0">{padString(data.playerName)}</h5>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (

@@ -10,25 +10,23 @@ namespace SMWebTracker.Services
         private readonly ISuperMetroidTrackerRepository _superMetroidTrackerRepository;
         private readonly ISuperMetroidGameRepository _superMetroidGameRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IHubContext<TrackerHub> _hubContext;
+//        private readonly IHubContext<TrackerHub> _hubContext;
 
         public SuperMetroidGameService(
             ISuperMetroidTrackerRepository superMetroidTrackerRepository,
             ISuperMetroidGameRepository superMetroidGameRepository,
-            IUserRepository userRepository,
-            IHubContext<TrackerHub> hubContext)
+            IUserRepository userRepository)
         {
             _superMetroidTrackerRepository = superMetroidTrackerRepository;
             _superMetroidGameRepository = superMetroidGameRepository;
             _userRepository = userRepository;
-            _hubContext = hubContext;
         }
 
         public async Task<NewSuperMetroidGameModel> CreateNewGameAsync(NewSuperMetroidGameParameters newSuperMetroidGameParameters, string userEmail)
         {
             var user = await _userRepository.FindActiveByEmailAsync(userEmail);
 
-            var newGame = await _superMetroidGameRepository.CreateNewGameAsync(newSuperMetroidGameParameters.PlayerNames.Count, user.Id);
+            var newGame = await _superMetroidGameRepository.CreateNewGameAsync(newSuperMetroidGameParameters.PlayerNames.Count, newSuperMetroidGameParameters.Description, user.Id);
 
             var result = new NewSuperMetroidGameModel
             {
@@ -38,7 +36,7 @@ namespace SMWebTracker.Services
 
             for (int i = 0; i < newSuperMetroidGameParameters.PlayerNames.Count; i++)
             {
-                var player = newSuperMetroidGameParameters.PlayerNames[i];
+                var player = newSuperMetroidGameParameters.PlayerNames[i].Trim();
 
                 var newTracker = await _superMetroidTrackerRepository.CreateNewTrackerAsync(player, i, newGame.Id);
 
@@ -85,6 +83,53 @@ namespace SMWebTracker.Services
             return null;
         }
 
+        public async Task<NewSuperMetroidGameModel> UpdateGameAsync(Guid gameId, NewSuperMetroidGameParameters newSuperMetroidGameParameters)
+        {
+            var game = await _superMetroidGameRepository.GetGameAsync(gameId);
+            if (game != null)
+            {
+                game.Description = newSuperMetroidGameParameters.Description;
+
+                var toAdd = new List<SuperMetroidTracker>();
+                var toRemove = new List<SuperMetroidTracker>();
+
+                foreach (var trakcer in game.SuperMetroidTrackers)
+                {
+                    if (!newSuperMetroidGameParameters.PlayerNames.Contains(trakcer.PlayerName))
+                        toRemove.Add(trakcer);
+                }
+
+                foreach (var playerName in newSuperMetroidGameParameters.PlayerNames)
+                {
+                    if (!game.SuperMetroidTrackers.Select(s => s.PlayerName).Contains(playerName))
+                        toAdd.Add(new SuperMetroidTracker
+                        {
+                            SuperMetroidGameId = gameId,
+                            PlayerName = playerName,
+                        });
+                }
+
+                foreach (var remove in toRemove)
+                    game.SuperMetroidTrackers.Remove(remove);
+
+                foreach (var add in toAdd)
+                    game.SuperMetroidTrackers.Add(add);
+
+                for (int i = 0; i < game.SuperMetroidTrackers.Count; i++)
+                    game.SuperMetroidTrackers[i].PlayerIndex = i;
+
+                await _superMetroidGameRepository.UpdageGame(game);
+
+                return new NewSuperMetroidGameModel
+                {
+                    SuperMetroidGameId = gameId,
+                    SuperMetroidGameTrackers = game.SuperMetroidTrackers.Select(g => new GuidIndexModel { Id = g.Id, Index = g.PlayerIndex }).ToList()
+                };
+            }
+
+            return null;
+        }
+
         private async Task<SuperMetroidTracker> Track(SuperMetroidTracker tracker, SuperMetroidTrackerModel trackerChanges)
         {
             bool changed = false;
@@ -117,7 +162,6 @@ namespace SMWebTracker.Services
             if (changed)
             {
                 await _superMetroidTrackerRepository.SaveChangesAsyc(tracker);
-                await _hubContext.Clients.All.SendAsync(tracker.Id.ToString(), tracker);
             }
 
             return tracker;

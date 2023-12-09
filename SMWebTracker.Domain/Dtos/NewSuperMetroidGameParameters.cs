@@ -9,5 +9,7 @@ namespace SMWebTracker.Domain.Dtos
     public class NewSuperMetroidGameParameters
     {
         public List<string> PlayerNames { get; set; } = new List<string>();
+
+        public string Description { get; set; } = "Super Metroid";
     }
 }

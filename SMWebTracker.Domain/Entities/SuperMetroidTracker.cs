@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace SMWebTracker.Domain.Entities
         [MinLength(3, ErrorMessage = "Nome do jogador precisa ter no mínimo 3 caracteres.")]
         [MaxLength(50, ErrorMessage = "Nome do jogador precisa ter no máximo 50 caracteres.")]
         public string PlayerName { get; set; }
+
+        [Required]
+        [DefaultValue(0)]
+        public int Position { get; set; }
 
         [Required]
         public bool VariaSuit { get; set; }

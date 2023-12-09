@@ -2,3 +2,9 @@
     filter: grayscale(100%);
     opacity: 0.3;
 }
+
+.table-cell-header {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

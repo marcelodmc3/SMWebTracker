@@ -5,7 +5,6 @@ import { setTokenHeaders } from '../../utils/Authentication';
 function TrackTableReadOnly({ id }) {
     const [data, setData] = useState(null);
     const [images, setImages] = useState([]);
-    const [countdown, setCountdown] = useState(5);
 
     useEffect(() => {
 
@@ -58,15 +57,10 @@ function TrackTableReadOnly({ id }) {
                 console.error('Failed to fetch count', error);
             }
         }, 5000);
-
-        const countdownInterval = setInterval(() => {
-            setCountdown((countdown) => countdown - 1);
-        }, 1000);
-
-        
+       
         // Clean up interval on unmount
         return () => {
-            clearInterval(interval); clearInterval(countdownInterval);
+            clearInterval(interval);
         }
     }, [id]);
 
@@ -80,8 +74,8 @@ function TrackTableReadOnly({ id }) {
     }
 
     return (
-        <div className="container bg-dark text-white" style={{height:305, maxWidth:200}}>
-            <h4 className="text-center my-0">{data.playerName}</h4>
+        <div className="container bg-dark text-white" style={{ height: 305, maxWidth: 200, minWidth: 200 }}>
+            <h6 className="text-center my-0">{data.playerName}</h6>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (

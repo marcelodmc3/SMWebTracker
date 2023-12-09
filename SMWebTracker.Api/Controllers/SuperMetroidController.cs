@@ -25,16 +25,19 @@ namespace SMWebTracker.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateNewGame([FromBody] NewSuperMetroidGameParameters parameters)
         {
-            if (parameters != null && parameters.PlayerNames != null && parameters.PlayerNames.All(p => !string.IsNullOrWhiteSpace(p) && p.Length > 2))
+            if (parameters != null && parameters.PlayerNames != null && parameters.PlayerNames.All(p => !string.IsNullOrWhiteSpace(p.Trim()) && p.Trim().Length > 2))
             {
-                var result = await _superMetroidGameService.CreateNewGameAsync(parameters, User.FindFirst(ClaimTypes.Email)?.Value);
-                if (result != null)
+                if (!string.IsNullOrWhiteSpace(parameters.Description) && parameters.Description.Trim().Length > 2)
                 {
-                    return Ok(result);
+                    var result = await _superMetroidGameService.CreateNewGameAsync(parameters, User.FindFirst(ClaimTypes.Email)?.Value);
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }                    
                 }
             }
             
-            return BadRequest("Por favor preencha a lista de usuários");
+            return BadRequest("Nomes e descrição precisam ter pelo menos 3 caracteres.");
         }
 
         [HttpGet("game/{gameId}")]
@@ -113,6 +116,29 @@ namespace SMWebTracker.Api.Controllers
                 return Ok(result);
 
             return NotFound();
+        }
+
+        [HttpPatch("game/{gameId}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateGameInfo([FromRoute] Guid gameId, [FromBody] NewSuperMetroidGameParameters parameters)
+        {
+            if (parameters != null && parameters.PlayerNames != null && parameters.PlayerNames.All(p => !string.IsNullOrWhiteSpace(p.Trim()) && p.Trim().Length > 2))
+            {
+                if (!string.IsNullOrWhiteSpace(parameters.Description) && parameters.Description.Trim().Length > 2)
+                {
+                    var result = await _superMetroidGameService.UpdateGameAsync(gameId, parameters);
+                    if (result != null)
+                    {
+                        return Ok(result);
+                    }
+
+                    return NotFound();
+                }
+            }
+
+            return BadRequest("Nomes e descrição precisam ter pelo menos 3 caracteres.");
         }
     }
 }

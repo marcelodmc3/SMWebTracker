@@ -20,7 +20,8 @@ namespace SMWebTracker.Data
                  .AddJsonFile("appsettings.Local.json")
                  .Build();
 
-            string connectionString = configuration.GetConnectionString("DefaultConnection");
+            string connectionString =
+                configuration.GetConnectionString("DefaultConnection");
 
             var optionBuilder = new DbContextOptionsBuilder<TrackerDB>();
 

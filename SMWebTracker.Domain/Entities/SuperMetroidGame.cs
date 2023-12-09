@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace SMWebTracker.Domain.Entities
 {
@@ -16,6 +17,10 @@ namespace SMWebTracker.Domain.Entities
 
         [Required]        
         public int PlayerCount { get; set; }
+
+        [Required]
+        [DefaultValue("Super Metroid")]
+        public string Description { get; set; } = "Super Metroid";
 
         [Required]
         public DateTime CreatedAt { get; set; }
@@ -30,6 +35,6 @@ namespace SMWebTracker.Domain.Entities
 
         public Guid? ClosedBy { get; set; }
 
-        public virtual IEnumerable<SuperMetroidTracker> SuperMetroidTrackers { get; set; }
+        public virtual List<SuperMetroidTracker> SuperMetroidTrackers { get; set; }
     }
 }

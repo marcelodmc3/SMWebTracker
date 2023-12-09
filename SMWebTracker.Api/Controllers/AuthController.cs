@@ -18,7 +18,7 @@ namespace SMWebTracker.Api.Controllers
         }
 
         [HttpPost("create")]
-        [Authorize]
+        //[Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateUser([FromBody] NewUserModel userModel)
