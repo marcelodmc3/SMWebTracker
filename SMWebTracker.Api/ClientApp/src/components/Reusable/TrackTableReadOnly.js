@@ -5,6 +5,39 @@ import { setTokenHeaders } from '../../utils/Authentication';
 function TrackTableReadOnly({ id }) {
     const [data, setData] = useState(null);
     const [images, setImages] = useState([]);
+    const [selectedOption, setSelectedOption] = useState(null);
+
+    const options =
+        [
+            {
+                "DisplayName": "-",
+                "OptionId": 0
+            },
+            {
+                "DisplayName": "1º LUGAR",
+                "OptionId": 1
+            },
+            {
+                "DisplayName": "2º LUGAR",
+                "OptionId": 2
+            },
+            {
+                "DisplayName": "3º LUGAR",
+                "OptionId": 3
+            },
+            {
+                "DisplayName": "4º LUGAR",
+                "OptionId": 4
+            },
+            {
+                "DisplayName": "DESISTIU",
+                "OptionId": 98
+            },
+            {
+                "DisplayName": "DESCLASSIFICADO",
+                "OptionId": 99
+            }
+        ];
 
     useEffect(() => {
 
@@ -40,6 +73,7 @@ function TrackTableReadOnly({ id }) {
         SuperMetroidServices.trackerById(id)
             .then((result) => {
                 setData(result.data);
+                setSelectedOption(result.data["position"]);
             });
 
     }, [id]);
@@ -50,7 +84,8 @@ function TrackTableReadOnly({ id }) {
             try {
                 SuperMetroidServices.trackerById(id)
                     .then((result) => {
-                        setData(result.data);                        
+                        setData(result.data);
+                        setSelectedOption(result.data["position"]);
                     });
 
             } catch (error) {
@@ -73,9 +108,43 @@ function TrackTableReadOnly({ id }) {
         rows.push(images.slice(i, i + 4));
     }
 
+    function getSelectedOptionName() {
+
+        if (selectedOption) {
+            for (let i = 0; i < options.length; i++) {
+                var option = options[i];
+
+                if (String(option.OptionId) === String(selectedOption))
+                    return option.DisplayName;
+            }
+        }
+
+        return "-";
+    }
+
+    function getResultFontStyle() {
+
+        if (selectedOption) {
+
+            if (String(selectedOption) === String(0))
+                    return "text-center my-0 result-text-default";
+
+            if (String(selectedOption) === String(1))
+                    return "text-center my-0 result-text-winner";
+
+            if (String(selectedOption) === String(98) || String(selectedOption) === String(99))
+                    return "text-center my-0 result-text-dnfs";                            
+
+            return "text-center my-0 result-text-runnerups";
+        }
+
+        return "text-center my-0 result-text-default";
+    }
+
     return (
-        <div className="container bg-dark text-white" style={{ height: 305, maxWidth: 200, minWidth: 200 }}>
+        <div className="container bg-dark text-white" style={{ height: 325, maxWidth: 200, minWidth: 200 }}>            
             <p className="text-center my-0 text-size-read-only">{data.playerName}</p>
+            <h5 className={getResultFontStyle()}>{getSelectedOptionName()}</h5>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (

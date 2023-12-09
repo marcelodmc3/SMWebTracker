@@ -158,6 +158,7 @@ namespace SMWebTracker.Services
             if (trackerChanges.GoldenTorizo.HasValue) { changed = true; tracker.GoldenTorizo = !tracker.GoldenTorizo; }
             if (trackerChanges.Grapple.HasValue) { changed = true; tracker.Grapple = !tracker.Grapple; }
             if (trackerChanges.Xray.HasValue) { changed = true; tracker.Xray = !tracker.Xray; }
+            if (trackerChanges.Position.HasValue) { changed = true; tracker.Position = trackerChanges.Position.Value; }
 
             if (changed)
             {

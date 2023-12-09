@@ -69,7 +69,7 @@ function GamesPage() {
 
             var payload = {
                 Description: editDescription.trim(),
-                PlayerNames: editPlayers.split(', ').map(player => player.trim()),
+                PlayerNames: editPlayers.split(', ').map(player => player.replace(',', '').trim()),
             }
 
             SuperMetroidServices.update(editGameId, payload)

@@ -9,6 +9,8 @@ namespace SMWebTracker.Domain.Dtos
 {
     public class SuperMetroidTrackerModel
     {        
+        public int? Position { get; set; }
+
         public bool? VariaSuit { get; set; }
         
         public bool? GravitySuit { get; set; }

@@ -6,3 +6,24 @@
 .text-size-read-only {
     font-size: 13px;
 }
+
+.result-text-default {
+    color: #212529;
+    font-weight: bold;
+}
+
+.result-text-winner {
+    color: mediumspringgreen;
+    font-weight: bold;
+}
+
+.result-text-runnerups {
+    color: gold;
+    font-weight: bold;
+}
+
+.result-text-dnfs {
+    color: red;
+    font-weight: bold;
+}
+
