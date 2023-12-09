@@ -12,5 +12,6 @@ namespace SMWebTracker.Domain.Interfaces
     {
         Task<User> CreateUser(NewUserModel newUserModel, string loggedUserEmail);
         Task<TokenModel> Login(LoginModel loginModel);
+        Task<bool> IsAdmin(string email);
     }
 }

@@ -75,7 +75,7 @@ function TrackTableReadOnly({ id }) {
 
     return (
         <div className="container bg-dark text-white" style={{ height: 305, maxWidth: 200, minWidth: 200 }}>
-            <h6 className="text-center my-0">{data.playerName}</h6>
+            <p className="text-center my-0">{data.playerName}</p>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (

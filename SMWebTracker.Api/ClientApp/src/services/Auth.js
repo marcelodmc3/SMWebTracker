@@ -9,5 +9,9 @@ export default {
 
     async ping() {
         return await api.get(`api/auth/ping`);
+    },
+
+    async isadmin() {
+        return await api.get(`api/auth/isadmin`);
     }
 };

@@ -18,7 +18,7 @@ namespace SMWebTracker.Api.Controllers
         }
 
         [HttpPost("create")]
-        //[Authorize]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateUser([FromBody] NewUserModel userModel)
@@ -62,11 +62,22 @@ namespace SMWebTracker.Api.Controllers
         }
 
         [HttpGet("ping")]
+        [Authorize]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> ping()
         {
             return Ok();
+        }
+
+        [HttpGet("IsAdmin")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> IsAdmin()
+        {
+            var isAdmin = await _userService.IsAdmin(User.FindFirst(ClaimTypes.Email)?.Value);
+
+            return Ok(new { IsAdmin = isAdmin });
         }
     }
 }

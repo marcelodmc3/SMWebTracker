@@ -5,6 +5,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import SuperMetroidServices from '../services/SuperMetroid';
 import { setTokenHeaders, isLogin } from '../utils/Authentication';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
+import Auth from '../services/Auth';
 
 function GamesPage() {
     const [games, setGames] = useState([]);
@@ -13,7 +15,7 @@ function GamesPage() {
     const [editGameId, setEditGameId] = useState(null);
     const [editDescription, setEditDescription] = useState('');
     const [editPlayers, setEditPlayers] = useState('');
-    const [isAdmin, setisAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const checkUserStatus = async () => {
@@ -31,10 +33,16 @@ function GamesPage() {
     useEffect(() => {
 
         setTokenHeaders();
-
+        
         SuperMetroidServices.activeGames()
             .then((result) => {
                 setGames(result.data);
+            });
+
+        Auth.isadmin()
+            .then((result) => {
+                var isAdmin = result.data.isAdmin;
+                setIsAdmin(isAdmin);
             });
 
     }, []);
@@ -54,21 +62,39 @@ function GamesPage() {
 
     const handleSave = () => {        
 
-        var payload = {
-            Description: editDescription,
-            PlayerNames: editPlayers.split(', ').map(player => player.trim()),
-        }
+        const hasLongString = editPlayers.split(', ').some(player => player.trim().length > 20);
 
-        SuperMetroidServices.activeGames(editGameId, payload)
-            .then(response => {
-                setGames(games.map(game => game.id === editGameId ? response.data : game));
-                setEditGameId(null);
-                setEditDescription('');
-                setEditPlayers('');
-            })
-            .catch(error => {
-                console.error('There was an error!', error);
-            });
+        if (!hasLongString) {
+
+            var payload = {
+                Description: editDescription.trim(),
+                PlayerNames: editPlayers.split(', ').map(player => player.trim()),
+            }
+
+            SuperMetroidServices.update(editGameId, payload)
+                .then(response => {
+
+                    setGames(games.map(game => game.id === editGameId ? response.data : game));
+                    setEditGameId(null);
+                    setEditDescription('');
+                    setEditPlayers('');
+
+                    toast.success('Jogo atualizado com sucesso!');
+                })
+                .catch(error => {
+
+                    if (error && error.response && error.response.data && error.response.data.message)
+                        toast.warning(error.response.data.message);
+
+                    else {
+
+                        console.log("ERROR", "SuperMetroidServices.update", error);
+                        toast.error('Erro inesperado ao atualizar o jogo.');
+                    }
+                });
+        } else {
+            toast.warning("O nome não pode conter mais do que 20 caracteres");
+        }
     };
 
     return (
@@ -78,6 +104,7 @@ function GamesPage() {
                     <tr style={{ borderColor: '#BBBBBB' }}>
                         <th scope="col">Descrição</th>
                         <th scope="col">Jogadores</th>
+                        {isAdmin && <th>Editar</th>}
                         <th scope="col">Tracker</th>
                         <th scope="col">Restreamer</th>
                     </tr>
@@ -96,11 +123,30 @@ function GamesPage() {
                                     game.description
                                 )}
                             </td>
-                            <td>{game.players.join(', ')}</td>
+                            <td>
+                                {editGameId === game.id ? (
+                                    <Form.Control
+                                        type="text"
+                                        value={editPlayers}
+                                        onChange={e => setEditPlayers(e.target.value)}
+                                    />
+                                ) : (
+                                    game.players.join(', ')
+                                )}
+                            </td>
+                            {isAdmin && (
+                                <td>
+                                    {editGameId === game.id ? (
+                                        <Button variant="success" onClick={handleSave}>Save</Button>
+                                    ) : (
+                                        <Button variant="primary" onClick={() => handleEdit(game)}>Editar</Button>
+                                    )}
+                                </td>
+                            )}
                             <td><Link to={`/game/${game.id}`} className="btn btn-primary me-2">Abrir</Link>
-                                <button onClick={() => { handleCopy(`/game/${game.id}`) }} className="btn btn-secondary">Link</button></td>
+                                <button onClick={() => { handleCopy(`/game/${game.id}`) }} className="btn btn-secondary">Copiar Link</button></td>
                             <td><Link to={`/game/readonly/${game.id}`} className="btn btn-primary me-2">Abrir</Link>
-                                <button onClick={() => { handleCopy(`/game/readonly/${game.id}`) }} className="btn btn-secondary">Link</button></td>
+                                <button onClick={() => { handleCopy(`/game/readonly/${game.id}`) }} className="btn btn-secondary">Copiar Link</button></td>
                         </tr>
                     ))}
                 </tbody>

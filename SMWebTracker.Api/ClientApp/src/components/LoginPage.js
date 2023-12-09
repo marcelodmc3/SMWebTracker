@@ -16,6 +16,8 @@ const LoginPage = () => {
 
             if (hasToken) {
 
+                setTokenHeaders();
+
                 AuthService.ping()
                     .then(() => { navigate('/gamespage'); })
                     .catch(() => {

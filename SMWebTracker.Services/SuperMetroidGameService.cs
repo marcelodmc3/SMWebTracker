@@ -83,7 +83,7 @@ namespace SMWebTracker.Services
             return null;
         }
 
-        public async Task<NewSuperMetroidGameModel> UpdateGameAsync(Guid gameId, NewSuperMetroidGameParameters newSuperMetroidGameParameters)
+        public async Task<ActiveGameModel> UpdateGameAsync(Guid gameId, NewSuperMetroidGameParameters newSuperMetroidGameParameters)
         {
             var game = await _superMetroidGameRepository.GetGameAsync(gameId);
             if (game != null)
@@ -120,10 +120,13 @@ namespace SMWebTracker.Services
 
                 await _superMetroidGameRepository.UpdageGame(game);
 
-                return new NewSuperMetroidGameModel
+                return new ActiveGameModel
                 {
-                    SuperMetroidGameId = gameId,
-                    SuperMetroidGameTrackers = game.SuperMetroidTrackers.Select(g => new GuidIndexModel { Id = g.Id, Index = g.PlayerIndex }).ToList()
+                    Id = gameId,
+                    CreatedBy = game.CreatedBy,
+                    CreatedAt = game.CreatedAt,
+                    Description = game.Description,
+                    Players = game.SuperMetroidTrackers.Select(g => g.PlayerName).ToList()
                 };
             }
 

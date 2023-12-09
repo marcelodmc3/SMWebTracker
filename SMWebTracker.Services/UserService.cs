@@ -59,28 +59,35 @@ namespace SMWebTracker.Services
                     var existingUser = await _userRepository.FindByEmailAsyn(newUserModel.Login.ToLower());
 
                     if (existingUser == null)
-                    {                      
+                    {
                         var hash = PasswordHasher.GerarHash(newUserModel.Password);
 
                         User user = new User()
-                        {                           
+                        {
                             Name = newUserModel.Name,
                             Login = newUserModel.Login.ToLower(),
                             Hash = hash[0],
                             Salt = hash[1],
                             Active = true,
                             IsAdmin = newUserModel.IsAdmin
-                        };                        
+                        };
 
                         await _userRepository.AddUser(user);
 
-                        return user;                        
+                        return user;
                     }
                 }
             }
             else throw new ValidationException($"{nameof(newUserModel)} esta nulo.");
 
             return null;
+        }
+
+        public async Task<bool> IsAdmin(string email)
+        {
+            var user = await _userRepository.FindActiveByEmailAsync(email);
+
+            return user.IsAdmin;
         }
 
         public async Task<TokenModel> Login(LoginModel loginModel)

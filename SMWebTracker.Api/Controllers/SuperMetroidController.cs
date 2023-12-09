@@ -124,7 +124,7 @@ namespace SMWebTracker.Api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> UpdateGameInfo([FromRoute] Guid gameId, [FromBody] NewSuperMetroidGameParameters parameters)
         {
-            if (parameters != null && parameters.PlayerNames != null && parameters.PlayerNames.All(p => !string.IsNullOrWhiteSpace(p.Trim()) && p.Trim().Length > 2))
+            if (parameters != null && parameters.PlayerNames != null && parameters.PlayerNames.Any() && parameters.PlayerNames.All(p => !string.IsNullOrWhiteSpace(p.Trim()) && p.Trim().Length > 2))
             {
                 if (!string.IsNullOrWhiteSpace(parameters.Description) && parameters.Description.Trim().Length > 2)
                 {
@@ -138,7 +138,7 @@ namespace SMWebTracker.Api.Controllers
                 }
             }
 
-            return BadRequest("Nomes e descrição precisam ter pelo menos 3 caracteres.");
+            return BadRequest(new { Message = "descrição e nomes precisam ter pelo menos 3 caracteres." });
         }
     }
 }
