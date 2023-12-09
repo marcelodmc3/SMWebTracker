@@ -114,7 +114,7 @@ function TrackTable({ id }) {
 
     return (
         <div className="container bg-dark text-white" style={{ minWidth: 230 }}>
-            <h5 className="table-cell-header text-center my-0">{padString(data.playerName)}</h5>
+            <h5 className="table-cell-header text-center text-size-tracker my-0">{padString(data.playerName)}</h5>
             <table className="table">
                 <tbody>
                     {rows.map((row, i) => (
