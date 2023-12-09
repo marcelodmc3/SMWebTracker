@@ -1,4 +1,5 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import './GamesPage.scss';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -144,9 +145,9 @@ function GamesPage() {
                                 </td>
                             )}
                             <td><Link to={`/game/${game.id}`} className="btn btn-primary me-2">Abrir</Link>
-                                <button onClick={() => { handleCopy(`/game/${game.id}`) }} className="btn btn-secondary">Copiar Link</button></td>
+                                <button onClick={() => { handleCopy(`/game/${game.id}`) }} title={"Copiar Link"} className="btn btn-secondary btn-copy">Copiar Link</button></td>
                             <td><Link to={`/game/readonly/${game.id}`} className="btn btn-primary me-2">Abrir</Link>
-                                <button onClick={() => { handleCopy(`/game/readonly/${game.id}`) }} className="btn btn-secondary">Copiar Link</button></td>
+                                <button onClick={() => { handleCopy(`/game/readonly/${game.id}`) }} title={"Copiar Link"} className="btn btn-secondary btn-copy">Copiar Link</button></td>
                         </tr>
                     ))}
                 </tbody>
