@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import SuperMetroidServices from '../../services/SuperMetroid';
 import { setTokenHeaders } from '../../utils/Authentication';
-import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function TrackTable({ id }) {
@@ -96,6 +95,10 @@ function TrackTable({ id }) {
         return paddedStr;
     }
 
+    function camelToRegular(str) {        
+        return str.replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase());
+    }
+
     return (
         <div className="container bg-dark text-white" style={{ minWidth: 230 }}>
             <h5 className="table-cell-header text-center text-size-tracker my-0">{padString(data.playerName)}</h5>
@@ -107,7 +110,7 @@ function TrackTable({ id }) {
                                 <td
                                     key={imageName} style={{ padding: '0.2rem', textAlign: 'center' }}
                                     onClick={() => { handleClick(imageName) }}
-                                    title={imageName}
+                                    title={camelToRegular(imageName)}
                                 >
                                     <img src={`/images/${imageName}.png`} alt={imageName} className={`img-fluid ${data[imageName] ? '' : 'grayscale'}`} />
                                 </td>

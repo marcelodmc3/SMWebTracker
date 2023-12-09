@@ -6,7 +6,6 @@ import TrackTableReadOnly from './Reusable/TrackTableReadOnly';
 import SuperMetroidServices from '../services/SuperMetroid';
 import { setTokenHeaders, isLogin } from '../utils/Authentication';
 
-
 function GamePage({ readonly }) {
     const [ids, setIds] = useState([]);
     const { id } = useParams();
