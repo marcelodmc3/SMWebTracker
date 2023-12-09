@@ -28,7 +28,7 @@ namespace SMWebTracker.Domain.Utils
                     new Claim(ClaimTypes.Email, user.Login.ToLower()),
                     new Claim(ClaimTypes.Role, user.IsAdmin.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddHours(4),
+                Expires = DateTime.UtcNow.AddHours(12),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(chaveBytes), SecurityAlgorithms.HmacSha256Signature)
             };
 
