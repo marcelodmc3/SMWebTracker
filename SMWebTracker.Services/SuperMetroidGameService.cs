@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.SignalR;
-using SMWebTracker.Domain.Dtos;
+﻿using SMWebTracker.Domain.Dtos;
 using SMWebTracker.Domain.Entities;
 using SMWebTracker.Domain.Interfaces;
 
@@ -10,7 +9,6 @@ namespace SMWebTracker.Services
         private readonly ISuperMetroidTrackerRepository _superMetroidTrackerRepository;
         private readonly ISuperMetroidGameRepository _superMetroidGameRepository;
         private readonly IUserRepository _userRepository;
-//        private readonly IHubContext<TrackerHub> _hubContext;
 
         public SuperMetroidGameService(
             ISuperMetroidTrackerRepository superMetroidTrackerRepository,
@@ -47,8 +45,7 @@ namespace SMWebTracker.Services
         }
 
         public async Task<List<ActiveGameModel>> GetActiveGamesAsNoTrackingAsync()        
-            => await _superMetroidGameRepository.GetActiveGamesAsNoTrackingAsync();
-        
+            => await _superMetroidGameRepository.GetActiveGamesAsNoTrackingAsync();        
 
         public async Task<SuperMetroidGame?> GetGameAsNoTrackingAsync(Guid gameId)
             => await _superMetroidGameRepository.GetGameAsNoTrackingAsync(gameId);

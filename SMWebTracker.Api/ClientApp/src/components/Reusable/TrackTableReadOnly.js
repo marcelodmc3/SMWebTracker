@@ -54,7 +54,7 @@ function TrackTableReadOnly({ id }) {
                     });
 
             } catch (error) {
-                console.error('Failed to fetch count', error);
+                console.error('Erro ao atualizar o tracker', error);
             }
         }, 5000);
        

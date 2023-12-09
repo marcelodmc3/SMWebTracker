@@ -56,29 +56,13 @@ function TrackTable({ id }) {
                     });
 
             } catch (error) {
-                console.error('Failed to fetch count', error);
+                console.error('Erro ao atualizar o tracker', error);
             }
         }, 5000);
 
         // Clean up interval on unmount
         return () => clearInterval(interval);
     }, [id]);
-
-    /*useEffect(() => {
-        
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl("/api/trackerhub", { skipNegotiation: true, transport: signalR.HttpTransportType.WebSockets })
-            .withAutomaticReconnect()
-            .build();
-
-        connection.start()
-            .then(() => console.log('Connection started'))
-            .catch(err => console.log('Error while starting connection: ' + err))
-
-        connection.on(`${id}`, (result) => {
-            setData(result.data);
-        });
-    }, [id]);//*/
 
     const handleClick = (imageName) => {
 

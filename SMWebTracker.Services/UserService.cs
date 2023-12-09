@@ -1,15 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using SMWebTracker.Data;
 using SMWebTracker.Domain.Dtos;
 using SMWebTracker.Domain.Entities;
 using SMWebTracker.Domain.Interfaces;
 using SMWebTracker.Domain.Utils;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SMWebTracker.Services
 {

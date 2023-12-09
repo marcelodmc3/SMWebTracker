@@ -30,7 +30,7 @@ function GamePage({ readonly }) {
 
         setTokenHeaders();
 
-        SuperMetroidServices.game(id)
+        SuperMetroidServices.gameById(id)
             .then((result) => {
                 setIds(result.data.superMetroidTrackers.map(t => t.id));
             });
